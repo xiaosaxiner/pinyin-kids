@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>拼音小乐园 🍭 宝宝学拼音</title>
+<style>
+  :root{
+    --bg1:#ffdde1; --bg2:#e0d4ff; --bg3:#c9f0ff;
+    --ink:#5b4a6b; --ink-soft:#8a7a99;
+    --card:#ffffff;
+    --pink:#ff7eb3; --pink-d:#ff5c9e;
+    --blue:#5ec8ff; --blue-d:#2fa6e6;
+    --yellow:#ffd54f; --yellow-d:#f5b400;
+    --green:#7ed957; --green-d:#4fbf2f;
+    --purple:#b388ff; --purple-d:#8e5bff;
+    --orange:#ffb74d; --orange-d:#ff9a1f;
+    --shadow:0 10px 30px rgba(120,90,160,.18);
+    --shadow-sm:0 4px 14px rgba(120,90,160,.15);
+  }
+  *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
+  html,body{margin:0; padding:0; min-height:100%;}
+  body{
+    font-family:"PingFang SC","Microsoft YaHei","Hiragino Sans GB",sans-serif;
+    color:var(--ink);
+    background:linear-gradient(160deg,var(--bg1) 0%,var(--bg2) 55%,var(--bg3) 100%);
+    background-attachment:fixed;
+    overflow-x:hidden;
+  }
+
+  /* ---------- 顶部 ---------- */
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 22px; max-width:1000px; margin:0 auto; gap:10px;
+  }
+  .logo{display:flex; align-items:center; gap:10px; font-size:1.35rem; font-weight:800; color:var(--ink);}
+  .logo .ice{font-size:1.8rem; animation:sway 3s ease-in-out infinite; display:inline-block;}
+  @keyframes sway{0%,100%{transform:rotate(-8deg)}50%{transform:rotate(8deg)}}
+
+  .nav{display:flex; gap:8px; flex-wrap:wrap;}
+  .nav button{
+    border:none; border-radius:30px; padding:10px 18px; font-size:1rem; font-weight:700;
+    background:#fff; color:var(--ink); cursor:pointer; box-shadow:var(--shadow-sm);
+    transition:transform .15s, box-shadow .15s;
+  }
+  .nav button:hover{transform:translateY(-2px);}
+  .nav button.active{background:var(--ink); color:#fff;}
+
+  /* ---------- 主容器 ---------- */
+  .wrap{max-width:1000px; margin:0 auto; padding:0 18px 70px;}
+
+  /* ---------- 欢迎屏 ---------- */
+  .hero{ text-align:center; padding:34px 10px 18px; }
+  .hero h1{font-size:2.6rem; margin:.2em 0; letter-spacing:2px;}
+  .hero .bounce-emo .em{display:inline-block; font-size:3rem; margin:0 6px; animation:updown 1.6s ease-in-out infinite;}
+  .hero .em:nth-child(2){animation-delay:.2s}
+  .hero .em:nth-child(3){animation-delay:.4s}
+  .hero .em:nth-child(4){animation-delay:.6s}
+  @keyframes updown{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+  .hero p{color:var(--ink-soft); font-size:1.15rem; margin-top:6px;}
+
+  .banner{
+    margin:22px auto 8px; max-width:620px; border-radius:26px; padding:18px 22px;
+    background:linear-gradient(90deg,#fff6d8,#ffe4ef,#e2f6ff);
+    box-shadow:var(--shadow); display:flex; align-items:center; gap:16px; justify-content:center;
+    font-size:1.05rem; font-weight:600; color:var(--ink); text-align:left;
+  }
+  .banner .p-icon{font-size:2.6rem;}
+
+  /* ---------- 分类卡片 ---------- */
+  .cat-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin:22px 0;}
+  @media(max-width:640px){.cat-grid{grid-template-columns:1fr;}}
+  .cat-card{
+    background:#fff; border-radius:24px; padding:26px 18px; text-align:center; cursor:pointer;
+    box-shadow:var(--shadow); transition:transform .2s; position:relative; overflow:hidden;
+  }
+  .cat-card:hover{transform:translateY(-6px) scale(1.02);}
+  .cat-card .big{font-size:2.6rem;}
+  .cat-card h3{margin:12px 0 6px; font-size:1.4rem; color:var(--ink);}
+  .cat-card p{margin:0; color:var(--ink-soft); font-size:.92rem;}
+  .cat-card .count{
+    position:absolute; top:14px; right:14px; background:var(--pink); color:#fff;
+    font-size:.8rem; font-weight:800; padding:4px 10px; border-radius:20px;
+  }
+  .cat-sheng{background:linear-gradient(160deg,#fff, #ffe9f2);}
+  .cat-yun{background:linear-gradient(160deg,#fff, #e6f5ff);}
+  .cat-zheng{background:linear-gradient(160deg,#fff, #fff3d6);}
+
+  /* ---------- 字母网格 ---------- */
+  .section-head{display:flex; align-items:center; gap:12px; margin:26px 4px 14px;}
+  .section-head .dot{width:14px;height:14px;border-radius:50%;}
+  .section-head h2{font-size:1.5rem; margin:0;}
+  .section-head .sub{color:var(--ink-soft); font-size:.92rem; margin-left:auto;}
+
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(92px,1fr)); gap:14px;}
+  @media(max-width:480px){.grid{grid-template-columns:repeat(4,1fr); gap:10px;}}
+
+  .tile{
+    background:#fff; border:3px solid transparent; border-radius:20px; padding:14px 6px 12px;
+    text-align:center; cursor:pointer; box-shadow:var(--shadow-sm); position:relative;
+    transition:transform .12s, border-color .2s, box-shadow .2s; user-select:none;
+  }
+  .tile:active{transform:scale(.94);}
+  .tile .letter{font-size:2.2rem; font-weight:900; line-height:1.1;}
+  .tile .example{font-size:.82rem; color:var(--ink-soft); margin-top:4px; min-height:1.2em; font-weight:600;}
+  .tile .example b{color:var(--pink-d);}
+  .tile .sound{font-size:.78rem; color:var(--ink-soft); margin-top:2px;}
+
+  .c-pink{border-color:#ffd3e4;}  .c-pink .letter{color:var(--pink-d);}
+  .c-blue{border-color:#c3e9ff;}  .c-blue .letter{color:var(--blue-d);}
+  .c-yellow{border-color:#ffe9a8;} .c-yellow .letter{color:#e0a800;}
+  .c-green{border-color:#cdebbb;}  .c-green .letter{color:var(--green-d);}
+  .c-purple{border-color:#e0cfff;} .c-purple .letter{color:var(--purple-d);}
+  .c-orange{border-color:#ffd9ac;} .c-orange .letter{color:var(--orange-d);}
+
+  .tile.pop{animation:pop .5s cubic-bezier(.2,2.2,.4,1);}
+  @keyframes pop{0%{transform:scale(.6)}50%{transform:scale(1.15)}100%{transform:scale(1)}}
+
+  /* ---------- 大弹窗展示 ---------- */
+  .overlay{
+    display:none; position:fixed; inset:0; z-index:200; background:rgba(90,70,120,.4);
+    backdrop-filter:blur(4px); align-items:center; justify-content:center; padding:20px;
+  }
+  .overlay.show{display:flex; animation:fade .25s;}
+  @keyframes fade{from{opacity:0}to{opacity:1}}
+  .big-card{
+    background:#fff; border-radius:34px; padding:40px 30px 34px; text-align:center;
+    box-shadow:0 22px 60px rgba(70,50,100,.35); max-width:360px; width:100%;
+    animation:cardIn .45s cubic-bezier(.2,1.6,.4,1); position:relative;
+  }
+  @keyframes cardIn{from{transform:scale(.5); opacity:0}to{transform:scale(1); opacity:1}}
+  .big-card .big-letter{font-size:6.5rem; font-weight:900; line-height:1; margin:14px 0;}
+  .big-card .big-example{font-size:1.4rem; font-weight:700; color:var(--ink); margin-bottom:4px;}
+  .big-card .big-pic{font-size:4rem; margin:8px 0;}
+  .big-card .big-sound{color:var(--ink-soft); font-size:1rem; margin-bottom:18px;}
+  .big-card .hint{color:var(--ink-soft); font-size:.9rem; margin-bottom:16px;}
+  .close-btn{
+    position:absolute; top:16px; right:18px; width:40px; height:40px; border-radius:50%;
+    border:none; background:#f0ecf6; color:var(--ink); font-size:1.3rem; font-weight:700; cursor:pointer;
+  }
+  .replay{
+    border:none; border-radius:30px; padding:12px 30px; font-size:1.1rem; font-weight:700; color:#fff;
+    cursor:pointer; box-shadow:var(--shadow); transition:transform .15s;
+    background:linear-gradient(90deg,var(--pink),var(--purple));
+  }
+  .replay:active{transform:scale(.95);}
+  .sound-bar{height:8px; border-radius:6px; background:#f1ecf6; margin:16px 4px; overflow:hidden;}
+  .sound-bar i{display:block; height:100%; width:0; background:linear-gradient(90deg,var(--pink),var(--purple)); border-radius:6px; transition:width .15s;}
+
+  /* ---------- 小测验 ---------- */
+  .quiz-box{background:#fff; border-radius:26px; padding:24px; margin-top:18px; box-shadow:var(--shadow);}
+  .quiz-top{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .quiz-top .q{font-size:1.3rem; font-weight:800;}
+  .score{ margin-left:auto; background:#fff3d6; padding:6px 14px; border-radius:20px; font-weight:800; color:#c98a00;}
+  .quiz-prompt{font-size:1.15rem; margin-bottom:18px; line-height:1.5;}
+  .listen-btn{
+    display:block; width:100%; margin-bottom:18px; border:none; border-radius:20px;
+    padding:16px; font-size:1.3rem; font-weight:800; color:#fff; cursor:pointer;
+    background:linear-gradient(90deg,var(--blue),var(--purple)); box-shadow:var(--shadow);
+    transition:transform .12s;
+  }
+  .listen-btn:active{transform:scale(.96);}
+  .quiz-prompt .target{display:inline-block; font-size:2.4rem; font-weight:900; vertical-align:middle; margin:0 6px;}
+  .quiz-options{display:grid; grid-template-columns:repeat(3,1fr); gap:12px;}
+  @media(max-width:520px){.quiz-options{grid-template-columns:repeat(2,1fr);}}
+  .quiz-opt{
+    border:3px solid #f0ecf6; border-radius:18px; background:#fff; padding:18px 8px;
+    font-size:1.7rem; font-weight:900; cursor:pointer; transition:transform .12s, border-color .2s;
+  }
+  .quiz-opt:hover{border-color:var(--pink);}
+  .quiz-opt:active{transform:scale(.95);}
+  .quiz-opt.good{border-color:var(--green); background:#eafbe0; animation:pop .5s;}
+  .quiz-opt.bad{border-color:var(--pink-d); background:#ffe9f0; animation:shake .4s;}
+  @keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+  .quiz-opt:disabled{opacity:.6; cursor:default;}
+
+  .confetti{position:fixed; top:-12px; z-index:300; pointer-events:none; animation:fall linear forwards;}
+  @keyframes fall{to{transform:translateY(105vh) rotate(720deg); opacity:.9;}}
+
+  .celeb{text-align:center; padding:26px; }
+  .celeb .emo{font-size:4rem; display:inline-block; animation:pop .6s;}
+  .celeb h3{font-size:1.6rem; margin:8px 0;}
+
+  .footer{ text-align:center; color:var(--ink-soft); font-size:.85rem; margin-top:34px; padding-top:16px; border-top:2px dashed rgba(120,90,160,.2);}
+
+  .back-top{
+    position:fixed; bottom:22px; right:22px; z-index:150; width:52px; height:52px; border-radius:50%;
+    background:var(--ink); color:#fff; border:none; font-size:1.3rem; cursor:pointer; box-shadow:var(--shadow);
+    display:none; transition:transform .15s;
+  }
+  .back-top.show{display:block;}
+  .back-top:active{transform:scale(.9);}
+
+  .tile.disabled{opacity:.4; pointer-events:none;}
+  .wobble{animation:wobble .6s ease-in-out;}
+  @keyframes wobble{0%,100%{transform:rotate(0)}25%{transform:rotate(-8deg)}75%{transform:rotate(8deg)}}
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="logo"><span class="ice">🍭</span> 拼音小乐园</div>
+    <div class="nav">
+      <button class="active" data-nav="home">🏠 首页</button>
+      <button data-nav="sheng">🔤 声母</button>
+      <button data-nav="yun">🔡 韵母</button>
+      <button data-nav="zheng">📖 整体认读</button>
+      <button data-nav="quiz">🎯 小测验</button>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <!-- 首页 -->
+    <section id="view-home" class="view">
+      <div class="hero">
+        <div class="bounce-emo"><span class="em">🐰</span><span class="em">🐻</span><span class="em">🐼</span><span class="em">🐯</span></div>
+        <h1>拼音小乐园</h1>
+        <p>跟着小动物们一起，快乐学拼音吧！</p>
+      </div>
+
+      <div class="banner">
+        <div class="p-icon">🎈</div>
+        <div>点一点下面的小卡片，<b>听一听、看一看</b>，学习拼音超好玩！<br>先认识 <b>声母</b>，再学 <b>韵母</b>，最后看看 <b>整体认读</b> 吧～</div>
+      </div>
+
+      <div class="cat-grid">
+        <div class="cat-card cat-sheng" data-goto="sheng">
+          <span class="count">23个</span>
+          <div class="big">🔤</div>
+          <h3>声母</h3>
+          <p>b p m f d t n l ……</p>
+        </div>
+        <div class="cat-card cat-yun" data-goto="yun">
+          <span class="count">24个</span>
+          <div class="big">🔡</div>
+          <h3>韵母</h3>
+          <p>a o e i u ü ……</p>
+        </div>
+        <div class="cat-card cat-zheng" data-goto="zheng">
+          <span class="count">16个</span>
+          <div class="big">📖</div>
+          <h3>整体认读</h3>
+          <p>zhi chi shi ri ……</p>
+        </div>
+      </div>
+
+      <div class="banner" style="background:linear-gradient(90deg,#e8f8ff,#eafbe0);">
+        <div class="p-icon">🎯</div>
+        <div>学完啦？快来挑战 <b>小测验</b>，看看你能拿多少分！<button class="replay" style="margin-left:10px; padding:8px 18px; font-size:.95rem;" data-goto="quiz">去挑战 →</button></div>
+      </div>
+    </section>
+
+    <!-- 声母 -->
+    <section id="view-sheng" class="view" style="display:none;">
+      <div class="section-head">
+        <span class="dot" style="background:var(--pink)"></span>
+        <h2>声母</h2>
+        <span class="sub">点击小卡片，听发音 🎧</span>
+      </div>
+      <div class="grid" id="grid-sheng"></div>
+    </section>
+
+    <!-- 韵母 -->
+    <section id="view-yun" class="view" style="display:none;">
+      <div class="section-head">
+        <span class="dot" style="background:var(--blue)"></span>
+        <h2>韵母</h2>
+        <span class="sub">点击小卡片，听发音 🎧</span>
+      </div>
+      <div class="grid" id="grid-yun"></div>
+    </section>
+
+    <!-- 整体认读 -->
+    <section id="view-zheng" class="view" style="display:none;">
+      <div class="section-head">
+        <span class="dot" style="background:var(--yellow)"></span>
+        <h2>整体认读音节</h2>
+        <span class="sub">点击小卡片，听发音 🎧</span>
+      </div>
+      <div class="grid" id="grid-zheng" style="grid-template-columns:repeat(auto-fill,minmax(110px,1fr));"></div>
+    </section>
+
+    <!-- 小测验 -->
+    <section id="view-quiz" class="view" style="display:none;">
+      <div class="section-head">
+        <span class="dot" style="background:var(--green)"></span>
+        <h2>拼音小测验</h2>
+        <span class="sub">答对拿星星 ⭐</span>
+      </div>
+      <div class="quiz-box" id="quiz-box"></div>
+      <button class="replay" style="margin-top:16px; width:100%;" id="quiz-restart">重新开始 🔄</button>
+    </section>
+
+    <div class="footer">🍭 拼音小乐园 · 和宝宝一起快乐学拼音 🐣</div>
+  </div>
+
+  <!-- 大图弹窗 -->
+  <div class="overlay" id="overlay">
+    <div class="big-card" id="bigcard">
+      <button class="close-btn" id="close-big">×</button>
+      <div class="big-letter" id="big-letter"></div>
+      <div class="big-pic" id="big-pic"></div>
+      <div class="big-example" id="big-example"></div>
+      <div class="big-sound" id="big-sound"></div>
+      <div class="sound-bar"><i id="sound-fill"></i></div>
+      <div class="hint" id="big-hint">点一下再听一遍～</div>
+      <button class="replay" id="replay-big">🔊 再听一遍</button>
+    </div>
+  </div>
+
+  <button class="back-top" id="back-top" title="回到顶部">↑</button>
+
+<script src="app.js"></script>
+</body>
+</html>
